@@ -1,3 +1,6 @@
+# Streak keeper
+Keep track of your daily habits and maintain your streaks with Streak Keeper.
+
 # React + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
