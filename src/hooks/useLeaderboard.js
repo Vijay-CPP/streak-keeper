@@ -52,8 +52,8 @@ const useLeaderboard = (userId) => {
                 });
 
                 leaderboardArray.sort((a, b) => {
-                    const d1 = new Date(a.start);
-                    const d2 = new Date(b.start);
+                    const d1 = new Date(a.start.seconds * 1000);
+                    const d2 = new Date(b.start.seconds * 1000);
 
                     if (d1 == d2)
                         return b.lastStreak - a.lastStreak;
