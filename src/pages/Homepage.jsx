@@ -2,10 +2,18 @@ import React from "react";
 import Navbar from "../components/Navbar";
 import { Link } from "react-router-dom";
 import { useUserAuth } from "../context/UserAuthContext";
+import { useNavigate } from "react-router-dom";
+
 
 const Homepage = () => {
-  const { user } = useUserAuth();
+  const { user, logOut } = useUserAuth();
+  const navigate = useNavigate();
 
+  function handleLogout() {
+    logOut();
+    navigate("/login");
+  }
+  
   return (
     <div>
       <Navbar />
@@ -41,11 +49,12 @@ const Homepage = () => {
                 </h1>
               </Link>
 
-              <Link to={"/logout"}>
-                <h1 className="text-base md:text-xl border-[1px] px-4 md:px-6 py-2 bg-purple-200 rounded-md hover:bg-purple-300 text-gray-800 mt-2 md:mt-0">
-                  Logout
-                </h1>
-              </Link>
+              <h1
+                onClick={handleLogout}
+                className="text-base md:text-xl border-[1px] px-4 md:px-6 py-2 bg-purple-200 rounded-md hover:bg-purple-300 text-gray-800 mt-2 md:mt-0"
+              >
+                Logout
+              </h1>
             </div>
           )}
         </div>
