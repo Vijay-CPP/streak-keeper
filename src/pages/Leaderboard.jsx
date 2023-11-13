@@ -17,18 +17,20 @@ const Leaderboard = () => {
       {loading ? (
         <Loader/>
       ) : (
-        <div className="w-[90vw] mx-auto">
-          <div className="flex font-bold bg-gray-200 p-2">
-            <div className="flex-1">Name</div>
-            <div className="flex-1">Days</div>
-            <div className="flex-1">Badge</div>
+        <div className="w-[70vw] mx-auto py-4 rounded-md">
+          <div className="flex font-bold bg-gray-200 p-2 rounded-md px-6">
+            <div className="flex-1 pl-1">Rank</div>
+            <div className="flex-1 pl-1">Name</div>
+            <div className="flex-1 pl-1">Streak</div>
+            <div className="flex-1 pl-1">Badge</div>
           </div>
           {leaderboard.map((obj, idx) => {
             return (
-              <div key={idx} className="flex gap-3 p-2 border-b">
-                <div className="flex-1">{obj.name ? obj.name : "New Profile"}</div>
-                <div className="flex-1">{`${getDateDifference(obj.start).days} Days`}</div>
-                <div className="flex-1">{`${generateStreakName(getDateDifference(obj.start).days)}`}</div>
+              <div key={idx} className="flex gap-3 p-2 border-b px-8">
+                <div className="flex-1 ">{idx+1}</div>
+                <div className="flex-1 ">{obj.name ? obj.name : "New Profile"}</div>
+                <div className="flex-1 ">{`${getDateDifference(obj.start).days} Days`}</div>
+                <div className="flex-1 ">{`${generateStreakName(getDateDifference(obj.start).days)}`}</div>
               </div>
             );
           })}
