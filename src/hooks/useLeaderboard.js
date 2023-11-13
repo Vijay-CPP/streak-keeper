@@ -1,6 +1,7 @@
 import { useReducer, useEffect } from "react";
 import { collection, onSnapshot, orderBy, query, where } from "firebase/firestore";
 import { db } from "../config/firebase";
+import { useUserAuth } from "../context/UserAuthContext"
 
 // Action types
 const FETCH_LEADERBOARD_SUCCESS = "FETCH_LEADERBOARD_SUCCESS";
@@ -14,13 +15,14 @@ const streakReducer = (state, action) => {
                 ...state,
                 loading: false,
                 error: null,
-                leaderboard: action.payload
+                leaderboard: action.payload.leaderboardArray,
+                currentRank: action.payload.currentRank
             };
         case FETCH_LEADERBOARD_FAILURE:
             return {
                 ...state,
                 loading: false,
-                error: action.payload,
+                error: action.payload
             };
         default:
             return state;
@@ -31,10 +33,12 @@ const streakReducer = (state, action) => {
 const initialState = {
     leaderboard: [],
     loading: true,
-    error: null
+    error: null,
+    currentRank: 0
 };
 
 const useLeaderboard = (userId) => {
+    const { user } = useUserAuth();
     const [state, dispatch] = useReducer(streakReducer, initialState);
 
     useEffect(() => {
@@ -52,6 +56,7 @@ const useLeaderboard = (userId) => {
                 });
 
                 leaderboardArray.sort((a, b) => {
+
                     const d1 = new Date(a.start.seconds * 1000);
                     const d2 = new Date(b.start.seconds * 1000);
 
@@ -62,7 +67,15 @@ const useLeaderboard = (userId) => {
                     }
                 });
 
-                dispatch({ type: FETCH_LEADERBOARD_SUCCESS, payload: leaderboardArray });
+                let currentRank = 0;
+
+                leaderboardArray.map((obj, idx) => {
+                    if (obj.userId === user.uid) {
+                        currentRank = idx + 1;
+                    }
+                })
+
+                dispatch({ type: FETCH_LEADERBOARD_SUCCESS, payload: { leaderboardArray, currentRank } });
             } else {
                 dispatch({ type: FETCH_LEADERBOARD_FAILURE, payload: "No Streaks!" });
             }
